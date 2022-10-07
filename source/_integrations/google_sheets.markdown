@@ -34,7 +34,8 @@ This section explains how to generate a Client ID and Client Secret on
 4. Navigate to APIs & Services (left sidebar) > [Credentials](https://console.cloud.google.com/apis/credentials)
 5. Click on the field on the left of the screen, **OAuth Consent Screen**.
 6. Select **External** and **Create**.
-7. Set the *App Name* (the name of the application asking for consent) to anything you want e.g.  *Home Assistant*.
+7. Set the *App 
+* (the name of the application asking for consent) to anything you want e.g.  *Home Assistant*.
 8. You then need to select a *Support email*. To do this, simply click the drop down box and select your email address.
 9. You finally need to complete the section: *Developer contact information*. To do this, simply enter your email address (same as above is fine).
 10. Scroll to the bottom and click **Save and Continue**. Don't have to fill out anything else or it may enable additional review.
@@ -67,20 +68,43 @@ The integration setup will next give you instructions to enter the [Application 
 
 {% enddetails %}
 
-## Troubleshooting
+### Troubleshooting configuration
 
-If you have an error with your credentials you can delete them in the [Application Credentials](/integrations/application_credentials/) user interface.
+- If you have an error with your credentials you can delete them in the [Application Credentials](/integrations/application_credentials/) user interface.
+- This integration was introduced in version 2022.10, be sure to reload the frontend (ctrl+r) or even restart, otherwise you may find yourself trying to add a wrong integration, which will fail.
+
+## Integration usage
+
+First steps to do and try when you sucessfully setup this integration are descibed in the _Basic Scenario_.  
+
+### Prelims
+
+After you complete the setup of this integration, you will be presented with a dialog stating that authentication was successfull and a spredsheet document created https://docs.google.com/spreadsheets/d/1zVoBlZMuMyZRJZP_RzFIQjzyunhZc8B5bj1e6wDXZSE
+
+Created configuration for Google Sheets.
 
 ### Service `google_sheets.append_sheet`
 
-You can use the service `google_sheets.append_sheet` to add a row of data to the Sheets document created at setup.
+Each call of the service `google_sheets.append_sheet` adds one row of *data* to a designated *sheet* of a *Google Sheets* document created at setup.
 
-{% details "Create Event Service details" %}
 
-| Service data attribute | Optional | Description | Example |
-| ---------------------- | -------- | ----------- | --------|
-| `config_entry` | no | Config entry to use.
-| `worksheet` | yes | Name of the worksheet. Defaults to the first one in the document. | Sheet1
-| `data` | no | Data to be appended to the worksheet. This puts the data on a new row, one value per column. | ["foo"]
 
-{% enddetails %}
+| Service data attribute | Optional | Description |
+| ---------------------- | -------- | ----------- |
+| `config_entry` | no | You may 
+| `worksheet` | yes | the Default is 'Sheet1'. Attribute worksheet represents a sheet     Defaults to the first one in the document.
+| `data` | no | Data to be appended to the worksheet. This puts the data on a new row, one value per column. 
+
+
+
+#### Example
+
+```yaml
+service: google_sheets.append_sheet
+data:
+  worksheet: Sheet1
+  data:
+    hello: world
+    cool: true
+    count: 5
+```
